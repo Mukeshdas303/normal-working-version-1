@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>View Submission</title>
+
+<style>
+body{
+    font-family:'Segoe UI';
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+.card{
+    width:700px;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.3);
+}
+input{
+    padding:10px;
+    width:60%;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+button{
+    padding:10px 20px;
+    border:none;
+    border-radius:8px;
+    background:#2c5364;
+    color:white;
+}
+table{width:100%;border-collapse:collapse;margin-top:15px;}
+td{border:1px solid #ddd;padding:10px;}
+td:first-child{background:#f4f6f8;font-weight:bold;}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+<h2>View Submission by ID</h2>
+
+<input id="sid" placeholder="Enter ID">
+<button onclick="load()">Load</button>
+
+<table id="table"></table>
+</div>
+
+<script>
+async function load(){
+    const id=document.getElementById("sid").value;
+
+    const res=await fetch(`http://localhost:8000/submission/${id}`);
+    const data=await res.json();
+
+    const table=document.getElementById("table");
+    table.innerHTML="";
+
+    for(let k in data){
+        if(k==="submission_id"||k==="timestamp") continue;
+
+        let row=document.createElement("tr");
+
+        let c1=document.createElement("td");
+        c1.innerText=k;
+
+        let c2=document.createElement("td");
+        c2.innerText=Array.isArray(data[k])?data[k].join(", "):data[k];
+        c2.id=k;
+
+        row.appendChild(c1);
+        row.appendChild(c2);
+        table.appendChild(row);
+    }
+}
+</script>
+
+</body>
+</html>

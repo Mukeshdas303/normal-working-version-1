@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Application Form</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI';
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.card{
+    width:800px;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.3);
+}
+
+h2{text-align:center;color:#2c5364;}
+
+.step{display:none;}
+.step.active{display:block;}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+input,select{
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    width:100%;
+}
+
+.btns{text-align:center;margin-top:15px;}
+
+button{
+    padding:10px 20px;
+    border:none;
+    border-radius:8px;
+    background:#2c5364;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    margin:5px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+<h2>Job Application</h2>
+
+<form id="appForm">
+
+<!-- STEP 1 -->
+<div id="step1" class="step active">
+<div class="grid">
+<input name="name" placeholder="Name" required>
+<input name="email" placeholder="Email" required>
+<input name="phone" placeholder="Phone" required>
+<input name="age" type="number" placeholder="Age" required>
+<input name="dob" type="date" required>
+</div>
+<div class="btns">
+<button type="button" onclick="nextStep(1)">Next</button>
+</div>
+</div>
+
+<!-- STEP 2 -->
+<div id="step2" class="step">
+<div class="grid">
+<input name="address" placeholder="Address">
+<input name="city" placeholder="City">
+<input name="state" placeholder="State">
+<input name="pincode" placeholder="Pincode">
+</div>
+<div class="btns">
+<button type="button" onclick="prevStep(2)">Back</button>
+<button type="button" onclick="nextStep(2)">Next</button>
+</div>
+</div>
+
+<!-- STEP 3 -->
+<div id="step3" class="step">
+<div class="grid">
+<input name="current_company" placeholder="Company">
+<input name="experience_years" placeholder="Experience">
+<input name="annual_income" placeholder="Income">
+<select name="position">
+<option>Data Analyst</option>
+<option>Software Engineer</option>
+<option>Manager</option>
+</select>
+</div>
+
+<label>Skills:</label>
+<label><input type="checkbox" name="skills" value="Python">Python</label>
+<label><input type="checkbox" name="skills" value="JavaScript">JavaScript</label>
+<label><input type="checkbox" name="skills" value="SQL">SQL</label>
+
+<div class="btns">
+<button type="button" onclick="prevStep(3)">Back</button>
+<button type="submit">Submit</button>
+</div>
+</div>
+
+</form>
+</div>
+
+<script>
+function nextStep(i){
+    document.getElementById("step"+i).classList.remove("active");
+    document.getElementById("step"+(i+1)).classList.add("active");
+}
+function prevStep(i){
+    document.getElementById("step"+i).classList.remove("active");
+    document.getElementById("step"+(i-1)).classList.add("active");
+}
+
+document.getElementById("appForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    const formData=new FormData(this);
+    const data={};
+
+    formData.forEach((v,k)=>{
+        if(data[k]){
+            if(!Array.isArray(data[k])) data[k]=[data[k]];
+            data[k].push(v);
+        }else{
+            data[k]=v;
+        }
+    });
+
+    const res=await fetch("http://localhost:8000/submit",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(data)
+    });
+
+    const result=await res.json();
+
+    localStorage.setItem("latestSubmissionId",result.data.submission_id);
+
+    alert("Submitted ID: "+result.data.submission_id);
+
+    window.location.href="summary.html";
+});
+</script>
+
+</body>
+</html>

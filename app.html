@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>APPLICATION</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: white;
+            width: 500px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        h2 {
+            color: #2c5364;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: block;
+            width: 80%;
+            margin: 15px auto;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            background: linear-gradient(135deg,#2c5364,#1b8bb8);
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .footer {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>Application Portal</h2>
+
+    <button class="btn" onclick="openForm()">Fill Application Form</button>
+
+    <button class="btn" onclick="openView()">Show Submitted Forms</button>
+
+    <div class="footer">
+        Select an option to continue
+    </div>
+
+</div>
+
+<script>
+function openForm(){
+    window.location.href = "index.html";
+}
+
+function openView(){
+    window.location.href = "view.html";
+}
+</script>
+
+</body>
+</html>

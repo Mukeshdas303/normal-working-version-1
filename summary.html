@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Submission Summary</title>
+
+<style>
+body{
+    font-family:'Segoe UI';
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+.card{
+    width:700px;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.3);
+}
+table{width:100%;border-collapse:collapse;}
+td{border:1px solid #ddd;padding:10px;}
+td:first-child{font-weight:bold;background:#f4f6f8;}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+<h2>Latest Submission</h2>
+<table id="table"></table>
+</div>
+
+<script>
+async function load(){
+    const res=await fetch("http://localhost:8000/latest");
+    const data=await res.json();
+
+    const table=document.getElementById("table");
+
+    for(let k in data){
+        if(k==="submission_id"||k==="timestamp") continue;
+
+        let row=document.createElement("tr");
+
+        let c1=document.createElement("td");
+        c1.innerText=k;
+
+        let c2=document.createElement("td");
+        c2.innerText=Array.isArray(data[k])?data[k].join(", "):data[k];
+        c2.id=k;
+
+        row.appendChild(c1);
+        row.appendChild(c2);
+        table.appendChild(row);
+    }
+}
+load();
+</script>
+
+</body>
+</html>
